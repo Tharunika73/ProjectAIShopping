@@ -1,0 +1,192 @@
+<!-- index.html (updated with extended profile popup and working cart icon) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IsTrendy</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    .profile-popup {
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      background-color: #fffaf0;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      display: none;
+      z-index: 1000;
+      width: 250px;
+    }
+
+    .profile-popup h3 {
+      margin-top: 0;
+      color: #5c4033;
+    }
+
+    .profile-popup p, .profile-popup a, .profile-popup button {
+      margin: 0.5rem 0;
+      display: block;
+      color: #5c4033;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    .profile-popup a:hover, .profile-popup button:hover {
+      text-decoration: underline;
+    }
+
+    .profile-icon, .cart-icon {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-slogan">
+      <img src="logo.jpg" alt="Logo" class="logo">
+      <span class="brand-name">IsTrendy</span>
+    </div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Contact</a>
+      <a href="#" id="showAuth">Login / Register</a>
+      <img src="https://i.pinimg.com/736x/69/bb/0e/69bb0ec11e240e166a968e0635462a2c.jpg" class="icon profile-icon" id="profileIcon" alt="Profile" />
+      <img src="https://i.pinimg.com/736x/70/84/8c/70848c9718dfd16b6506066c96bf818f.jpg" class="icon cart-icon" id="cartIcon" alt="Cart" />
+    </nav>
+  </header>
+
+  <div class="profile-popup" id="profilePopup">
+    <h3>Your Profile</h3>
+    <p><strong>Username:</strong> <span id="username">Guest</span></p>
+    <a href="#">Order History</a>
+    <a href="#">Your Orders</a>
+    <a href="#">Settings</a>
+    <button id="logout">Logout</button>
+  </div>
+
+  <section class="hero">
+    <div class="hero-left">
+      <h1 class="animated-slogan">Be Bold. Be Trendy. Be You.</h1>
+      <p class="about-text">
+        At IsTrendy, we bring the latest fashion straight to your wardrobe. Explore unique styles that reflect your vibe. Express yourself in bold and modern fashion with confidence.
+      </p>
+    </div>
+    <div class="hero-right">
+      <img src="https://i.pinimg.com/1200x/94/23/48/94234866ca43f707d34f6875e4fef84c.jpg" alt="Fashion Image" class="hero-image" />
+    </div>
+  </section>
+
+  <!-- Auth Form -->
+  <div id="formContainer" class="form-container">
+    <span id="closeBtn" class="close-btn">&times;</span>
+
+    <div id="loginForm" class="form">
+      <h2>Login</h2>
+      <p class="login-slogan">Welcome back to <strong>IsTrendy</strong>! Style your way.</p>
+      <input type="text" id="loginUsername" placeholder="Username" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button id="loginSubmit">Login</button>
+      <p><a href="#">Forgot password?</a></p>
+      <p>Don't have an account? <a href="#" id="switchToRegister">Register</a></p>
+    </div>
+
+    <div id="registerForm" class="form" style="display: none;">
+      <h2>Register</h2>
+      <input type="text" placeholder="Username" required />
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <input type="password" placeholder="Confirm Password" required />
+      <button>Register</button>
+      <p>Already have an account? <a href="#" id="switchToLogin">Login</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const formContainer = document.getElementById("formContainer");
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const closeBtn = document.getElementById("closeBtn");
+      const showAuthBtn = document.getElementById("showAuth");
+      const switchToRegister = document.getElementById("switchToRegister");
+      const switchToLogin = document.getElementById("switchToLogin");
+      const loginSubmit = document.getElementById("loginSubmit");
+      const profilePopup = document.getElementById("profilePopup");
+      const profileIcon = document.getElementById("profileIcon");
+      const cartIcon = document.getElementById("cartIcon");
+      const usernameSpan = document.getElementById("username");
+      const logoutBtn = document.getElementById("logout");
+
+      if (localStorage.getItem("isLoggedIn") === "true") {
+        const username = localStorage.getItem("username") || "Guest";
+        usernameSpan.textContent = username;
+        showAuthBtn?.remove();
+      } else {
+        profilePopup.innerHTML = '<p>You must <a href="#" onclick="formContainer.style.display=\'flex\'">login</a> to see your profile.</p>';
+      }
+
+      profileIcon?.addEventListener("click", () => {
+        profilePopup.style.display = (profilePopup.style.display === "block") ? "none" : "block";
+      });
+
+      cartIcon?.addEventListener("click", () => {
+        if (localStorage.getItem("isLoggedIn") === "true") {
+          window.location.href = "cart.html";
+        } else {
+          alert("Please login first to view your cart.");
+          formContainer.style.display = "flex";
+          loginForm.style.display = "block";
+          registerForm.style.display = "none";
+        }
+      });
+
+      logoutBtn?.addEventListener("click", () => {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("username");
+        alert("You have been logged out.");
+        location.reload();
+      });
+
+      showAuthBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        formContainer.style.display = "flex";
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+      });
+
+      switchToRegister?.addEventListener("click", (e) => {
+        e.preventDefault();
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+      });
+
+      switchToLogin?.addEventListener("click", (e) => {
+        e.preventDefault();
+        registerForm.style.display = "none";
+        loginForm.style.display = "block";
+      });
+
+      closeBtn?.addEventListener("click", () => {
+        formContainer.style.display = "none";
+      });
+
+      loginSubmit?.addEventListener("click", () => {
+        const username = document.getElementById("loginUsername").value;
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("username", username);
+        alert("Logged in successfully");
+        formContainer.style.display = "none";
+        location.reload();
+      });
+    });
+  </script>
+</body>
+</html>
