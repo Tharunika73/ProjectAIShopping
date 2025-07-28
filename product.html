@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IsTrendy</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="logo-slogan">
+  <img class="logo" src="C:\Users\monik\OneDrive\ドキュメント\画像\mini project images\download-removebg-preview.png"alt="Logo" />
+  <span class="brand-name">IsTrendy</span>
+</div>
+    <nav>
+      <nav>
+      <a href="home.html">Home</a>
+    </nav>
+      <a href="#">Contact</a>
+      <a href="#" id="showAuth">Login / Register</a>
+      <img src="C:\Users\monik\OneDrive\ドキュメント\画像\mini project images\_-removebg-preview.png" class="icon" alt="Profile" />
+      <img src="C:\Users\monik\OneDrive\ドキュメント\画像\mini project images\Cart_Icon_Symbol_Design_Illustration-removebg-preview.png" class="icon" alt="Cart" />
+  </header>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3ecc1;
+      color: #3b1e08;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #f7e2ba;
+    }
+
+    .logo-slogan {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .brand-name {
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+    }
+
+    nav a,
+    nav img.icon {
+      margin-left: 0.5rem;
+      text-decoration: none;
+      color: #3b1e08;
+      font-weight: bold;
+    }
+
+    .icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+    .product-detail {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .product-detail img {
+      width: 300px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .product-info {
+      max-width: 500px;
+    }
+
+    .product-info h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .product-info p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+    }
+
+    .add-cart {
+      background-color: #3b1e08;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .back-home {
+      display: inline-block;
+      margin-top: 2rem;
+      text-decoration: none;
+      color: #3b1e08;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    .back-home:hover {
+      color: #a0522d;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Product Detail Section -->
+  <div class="product-detail">
+    <img id="productImage" src="" alt="Product Image"/>
+    <div class="product-info">
+      <h1 id="productTitle">Product Name</h1>
+      <p id="productPrice">Price: ₹</p>
+      <p id="productRating">Rating: </p>
+      <p id="productDescription">Description</p>
+      <button id="addToCartBtn" class="add-cart">Add to Cart</button>
+
+      <br />
+    </div>
+  </div>
+
+  <!-- JavaScript file (make sure this exists and is correct) -->
+  <script src="js.js"></script>
+</body>
+</html>
