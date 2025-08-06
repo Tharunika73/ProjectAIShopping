@@ -85,7 +85,8 @@ const ContactFooter = () => {
   };
 
   return (
-    <section style={sectionStyle}>
+    <section id="contact" style={sectionStyle}>
+
       {/* Contact Form + Reach Us Info */}
       <div style={{ ...containerStyle }}>
         <div style={formAndInfoWrapperStyle}>
