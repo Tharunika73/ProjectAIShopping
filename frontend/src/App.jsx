@@ -9,6 +9,14 @@ import ProductSection from './ProductSection';
 import ContactFooter from './ContactFooter';
 // import ProductDetail from './ProductDetail'; // You can add this later if needed
 
+// Add this route in App.jsx
+import CartViewer from './components/CartViewer';
+
+<Routes>
+  {/* ...other routes */}
+  <Route path="/cart" element={<CartViewer userId="689421279d457099a32acaa6" />} />
+</Routes>
+
 const App = () => {
   return (
     <Router>
