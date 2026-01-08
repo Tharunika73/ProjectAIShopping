@@ -1,0 +1,168 @@
+<!-- cart.html (multi-product support with quantity, address, payment, username, and history storage + payment detail prompts) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IsTrendy - Cart</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: #5c4033;
+    }
+    .form-section {
+      margin: 20px 0;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .buyBtn {
+      padding: 10px 15px;
+      background-color: #5c4033;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .buyBtn:hover {
+      background-color: #3d2a23;
+    }
+    .username-info {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .payment-details {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Shopping Cart</h1>
+
+  <div class="username-info" id="userInfo"></div>
+
+  <form id="orderForm">
+    <div class="form-section">
+      <label>Select Products:</label>
+      <div>
+        <input type="checkbox" name="product" value="Stylish Jacket" /> Stylish Jacket
+        <input type="number" name="quantity_Stylish Jacket" placeholder="Qty" min="1" value="1" style="width: 80px; margin-left: 10px;" />
+      </div>
+      <div>
+        <input type="checkbox" name="product" value="Trendy Sneakers" /> Trendy Sneakers
+        <input type="number" name="quantity_Trendy Sneakers" placeholder="Qty" min="1" value="1" style="width: 80px; margin-left: 10px;" />
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label for="address">Delivery Address:</label>
+      <textarea id="address" rows="4" required></textarea>
+    </div>
+
+    <div class="form-section">
+      <label for="payment">Payment Method:</label>
+      <select id="payment" required>
+        <option value="cod">Cash on Delivery</option>
+        <option value="upi">UPI</option>
+        <option value="card">Credit/Debit Card</option>
+      </select>
+    </div>
+
+    <div id="paymentDetails" class="form-section payment-details">
+      <label for="paymentInfo">Payment Details:</label>
+      <input type="text" id="paymentInfo" placeholder="Enter UPI ID or Card Number" />
+    </div>
+
+    <button type="submit" class="buyBtn">Place Order</button>
+  </form>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const userInfo = document.getElementById("userInfo");
+      const username = localStorage.getItem("username");
+
+      if (localStorage.getItem("isLoggedIn") === "true" && username) {
+        userInfo.textContent = `Logged in as: ${username}`;
+      } else {
+        alert("Please log in to place your order.");
+        window.location.href = "index.html";
+      }
+
+      const paymentSelect = document.getElementById("payment");
+      const paymentDetails = document.getElementById("paymentDetails");
+      const paymentInfo = document.getElementById("paymentInfo");
+
+      paymentSelect.addEventListener("change", () => {
+        if (paymentSelect.value === "upi" || paymentSelect.value === "card") {
+          paymentDetails.style.display = "block";
+          paymentInfo.required = true;
+        } else {
+          paymentDetails.style.display = "none";
+          paymentInfo.required = false;
+        }
+      });
+
+      document.getElementById("orderForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const address = document.getElementById("address").value;
+        const payment = document.getElementById("payment").value;
+        const paymentDetailValue = paymentInfo.value;
+        const selectedProducts = document.querySelectorAll("input[name='product']:checked");
+
+        if (selectedProducts.length === 0) {
+          alert("Please select at least one product.");
+          return;
+        }
+
+        if ((payment === "upi" || payment === "card") && !paymentDetailValue.trim()) {
+          alert("Please enter valid payment details.");
+          return;
+        }
+
+        let orderSummary = "";
+        let orders = [];
+
+        selectedProducts.forEach(productInput => {
+          const product = productInput.value;
+          const quantityInput = document.querySelector(`input[name='quantity_${product}']`);
+          const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+
+          orders.push({ product, quantity });
+          orderSummary += `\n${quantity} x ${product}`;
+        });
+
+        const order = {
+          username,
+          orders,
+          address,
+          payment,
+          paymentDetail: paymentDetailValue,
+          date: new Date().toLocaleString()
+        };
+
+        // Save to localStorage order history
+        let history = JSON.parse(localStorage.getItem("orderHistory") || "[]");
+        history.push(order);
+        localStorage.setItem("orderHistory", JSON.stringify(history));
+
+        alert(`Order placed for: ${orderSummary}\nPayment Mode: ${payment.toUpperCase()}\nDelivery in 5-7 days!`);
+        document.getElementById("orderForm").reset();
+        paymentDetails.style.display = "none";
+      });
+    });
+  </script>
+</body>
+</html>
